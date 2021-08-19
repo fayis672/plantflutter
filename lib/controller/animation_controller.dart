@@ -8,22 +8,19 @@ class AnimationCon extends GetxController with SingleGetTickerProviderMixin {
 
   @override
   void onInit() {
-    animationController =
-        AnimationController(vsync: this, duration: const Duration(seconds: 1));
+    animationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 400));
     animation = Tween<Offset>(
-      begin: Offset.zero,
-      end: const Offset(0.0, 1.0),
+      begin: const Offset(0.0, 1.0),
+      end: Offset.zero,
     ).animate(
-      animationController,
-    )..addListener(() => update());
+        CurvedAnimation(parent: animationController, curve: Curves.easeIn))
+      ..addListener(() => update());
+    animationController.forward();
     super.onInit();
   }
 
-  void slide() {
-    if (animationController.isDismissed) {
-      animationController.forward();
-    } else {
-      animationController.reverse();
-    }
+  void slidedown() {
+    animationController.reverse();
   }
 }

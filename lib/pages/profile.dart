@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
+import 'package:profile_app/controller/animation_controller.dart';
 
 class Profile extends StatelessWidget {
   Profile({Key? key}) : super(key: key);
+
+  final AnimationCon _animationCon = Get.put(AnimationCon());
 
   final List<String> _bootmImages = const [
     'asset/images/bg2.jpg',
@@ -149,62 +152,81 @@ class Profile extends StatelessWidget {
         )),
         Align(
             alignment: Alignment.bottomCenter,
-            child: Container(
-                height: 250,
-                decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(20))),
-                child: DefaultTabController(
-                  length: 3,
-                  child: Column(
-                    children: [
-                      const TabBar(
-                        padding: EdgeInsets.all(20),
-                        indicatorColor: Colors.transparent,
-                        labelStyle: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16),
-                        unselectedLabelStyle: TextStyle(fontSize: 13),
-                        tabs: [
-                          Text("Photos"),
-                          Text("Likes"),
-                          Text("Collection")
-                        ],
-                        labelColor: Colors.black,
-                      ),
-                      Expanded(
-                          child: TabBarView(children: [
-                        ListView.separated(
-                            separatorBuilder: (context, index) {
-                              return const SizedBox(
-                                width: 20,
-                              );
-                            },
-                            scrollDirection: Axis.horizontal,
-                            padding: const EdgeInsets.all(16),
-                            itemCount: 5,
-                            itemBuilder: (context, index) {
-                              return ClipRRect(
-                                borderRadius: BorderRadius.circular(13),
-                                child: Image.asset(
-                                  _bootmImages[index],
-                                  height: 200,
-                                  width: 200,
-                                  fit: BoxFit.cover,
+            child: GetBuilder<AnimationCon>(
+              init: AnimationCon(),
+              initState: (_) {},
+              builder: (controller) {
+                return SlideTransition(
+                  position: controller.animation,
+                  child: GestureDetector(
+                    onVerticalDragUpdate: (details) {
+                      int sensitivity = 8;
+                      if (details.delta.dy > sensitivity) {
+                        _animationCon.slidedown();
+                      } else if (details.delta.dy < -sensitivity) {
+                        // Up Swipe
+                      }
+                    },
+                    child: Container(
+                        height: 250,
+                        decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(20))),
+                        child: DefaultTabController(
+                          length: 3,
+                          child: Column(
+                            children: [
+                              const TabBar(
+                                padding: EdgeInsets.all(20),
+                                indicatorColor: Colors.transparent,
+                                labelStyle: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 16),
+                                unselectedLabelStyle: TextStyle(fontSize: 13),
+                                tabs: [
+                                  Text("Photos"),
+                                  Text("Likes"),
+                                  Text("Collection")
+                                ],
+                                labelColor: Colors.black,
+                              ),
+                              Expanded(
+                                  child: TabBarView(children: [
+                                ListView.separated(
+                                    separatorBuilder: (context, index) {
+                                      return const SizedBox(
+                                        width: 20,
+                                      );
+                                    },
+                                    scrollDirection: Axis.horizontal,
+                                    padding: const EdgeInsets.all(16),
+                                    itemCount: 5,
+                                    itemBuilder: (context, index) {
+                                      return ClipRRect(
+                                        borderRadius: BorderRadius.circular(13),
+                                        child: Image.asset(
+                                          _bootmImages[index],
+                                          height: 200,
+                                          width: 200,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      );
+                                    }),
+                                const Center(
+                                  child: Text("39 Likes",
+                                      style: TextStyle(fontSize: 30)),
                                 ),
-                              );
-                            }),
-                        const Center(
-                          child:
-                              Text("39 Likes", style: TextStyle(fontSize: 30)),
-                        ),
-                        const Center(
-                            child: Text("This is collection",
-                                style: TextStyle(fontSize: 30)))
-                      ]))
-                    ],
+                                const Center(
+                                    child: Text("This is collection",
+                                        style: TextStyle(fontSize: 30)))
+                              ]))
+                            ],
+                          ),
+                        )),
                   ),
-                ))),
+                );
+              },
+            )),
       ],
     ));
   }

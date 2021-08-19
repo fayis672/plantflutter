@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/home', page: () => const Home()),
         GetPage(name: '/anim', page: () => const AnimExample())
       ],
-      initialRoute: "/anim",
+      initialRoute: "/home",
       home: const Home(),
     );
   }
