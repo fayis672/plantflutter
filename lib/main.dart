@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:profile_app/pages/anim.dart';
 import 'package:profile_app/pages/home.dart';
 import 'package:profile_app/pages/profile.dart';
 
@@ -18,9 +19,10 @@ class MyApp extends StatelessWidget {
       ),
       getPages: [
         GetPage(name: '/profile', page: () => Profile()),
-        GetPage(name: '/home', page: () => const Home())
+        GetPage(name: '/home', page: () => const Home()),
+        GetPage(name: '/anim', page: () => const AnimExample())
       ],
-      initialRoute: "/home",
+      initialRoute: "/anim",
       home: const Home(),
     );
   }
